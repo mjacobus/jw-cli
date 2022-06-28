@@ -1,0 +1,27 @@
+name: CLI tests
+
+on:
+  push:
+    branches: 
+      - main
+  pull_request:
+    branches:
+      - '*'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: CLI tests
+    strategy:
+      matrix:
+        ruby:
+          - '3.0.2'
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
+    - run: bundle install
+    - run: bundle exec rake install
+    # - run: bundle exec mj meeting_media fetch --date
